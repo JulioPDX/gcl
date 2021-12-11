@@ -1,0 +1,45 @@
+name: cicd
+prefix: ""
+
+mgmt:
+  network: statics
+  ipv4_subnet: 172.100.100.0/24
+
+topology:
+  kinds:
+    ceos:
+      image: ceos:4.27.0F
+    linux:
+      image: ghcr.io/hellt/network-multitool
+  nodes:
+    pdx-rtr-eos-01:
+      kind: ceos
+      mgmt_ipv4: 172.100.100.11
+    pdx-rtr-eos-02:
+      kind: ceos
+      mgmt_ipv4: 172.100.100.12
+    pdx-rtr-eos-03:
+      kind: ceos
+      mgmt_ipv4: 172.100.100.13
+    pdx-rtr-eos-04:
+      kind: ceos
+      image: ceos:4.27.0F
+      mgmt_ipv4: 172.100.100.14
+    client1:
+      kind: linux
+      mgmt_ipv4: 172.100.100.21
+    client2:
+      kind: linux
+      mgmt_ipv4: 172.100.100.22
+    # junos3:
+    #   kind: crpd
+    #   image: hub.juniper.net/routing/crpd:19.4R1.10
+    #   mgmt_ipv4: 172.100.100.13
+      # license: junos-lic
+  links:
+    - endpoints: ["pdx-rtr-eos-01:eth1", "pdx-rtr-eos-02:eth1"]
+    - endpoints: ["pdx-rtr-eos-02:eth2", "pdx-rtr-eos-03:eth1"]
+    - endpoints: ["pdx-rtr-eos-03:eth2", "pdx-rtr-eos-04:eth1"]
+    # Client connections
+    - endpoints: ["client1:eth1", "pdx-rtr-eos-01:eth2"]
+    - endpoints: ["client2:eth1", "pdx-rtr-eos-04:eth2"]
