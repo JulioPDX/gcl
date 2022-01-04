@@ -9,7 +9,7 @@ from tools import nornir_set_creds
 
 
 def deploy_network(task):
-    """Configures network with Scrapli"""
+    """Configures network with NAPALM"""
     if "client" in task.host.name:
         pass
     else:
