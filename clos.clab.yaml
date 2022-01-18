@@ -1,0 +1,68 @@
+name: clos
+prefix: ""
+
+mgmt:
+  network: statics
+  ipv4_subnet: 172.100.100.0/24
+
+topology:
+  kinds:
+    ceos:
+      image: ceos:4.27.0F
+    linux:
+      image: ghcr.io/hellt/network-multitool
+  nodes:
+    spine1:
+      kind: ceos
+      mgmt_ipv4: 172.100.100.11
+    spine2:
+      kind: ceos
+      mgmt_ipv4: 172.100.100.12
+    leaf1:
+      kind: ceos
+      mgmt_ipv4: 172.100.100.21
+    leaf2:
+      kind: ceos
+      mgmt_ipv4: 172.100.100.22
+    leaf3:
+      kind: ceos
+      mgmt_ipv4: 172.100.100.23
+    leaf4:
+      kind: ceos
+      mgmt_ipv4: 172.100.100.24
+    ext:
+      kind: ceos
+      mgmt_ipv4: 172.100.100.25
+    client1:
+      kind: linux
+      mgmt_ipv4: 172.100.100.101
+    client2:
+      kind: linux
+      mgmt_ipv4: 172.100.100.102
+    client3:
+      kind: linux
+      mgmt_ipv4: 172.100.100.103
+    client4:
+      kind: linux
+      mgmt_ipv4: 172.100.100.104
+  links:
+    # Spine to leaf
+    - endpoints: ["spine1:eth1", "leaf1:eth1"]
+    - endpoints: ["spine1:eth2", "leaf2:eth1"]
+    - endpoints: ["spine1:eth3", "leaf3:eth1"]
+    - endpoints: ["spine1:eth4", "leaf4:eth1"]
+    - endpoints: ["spine2:eth1", "leaf1:eth2"]
+    - endpoints: ["spine2:eth2", "leaf2:eth2"]
+    - endpoints: ["spine2:eth3", "leaf3:eth2"]
+    - endpoints: ["spine2:eth4", "leaf4:eth2"]
+    # leaf to leaf iBGP and MLAG
+    - endpoints: ["leaf1:eth3", "leaf2:eth3"]
+    - endpoints: ["leaf3:eth3", "leaf4:eth3"]
+    # leaf to clients
+    - endpoints: ["leaf1:eth4", "client1:eth1"]
+    - endpoints: ["leaf2:eth4", "client2:eth1"]
+    - endpoints: ["leaf3:eth4", "client3:eth1"]
+    - endpoints: ["leaf4:eth4", "client4:eth1"]
+    # External connectivity, default route
+    - endpoints: ["leaf3:eth5", "ext:eth1"]
+    - endpoints: ["leaf4:eth5", "ext:eth2"]

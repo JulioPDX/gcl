@@ -35,7 +35,7 @@ topology:
     #   kind: crpd
     #   image: hub.juniper.net/routing/crpd:19.4R1.10
     #   mgmt_ipv4: 172.100.100.13
-      # license: junos-lic
+    # license: junos-lic
   links:
     - endpoints: ["pdx-rtr-eos-01:eth1", "pdx-rtr-eos-02:eth1"]
     - endpoints: ["pdx-rtr-eos-02:eth2", "pdx-rtr-eos-03:eth1"]

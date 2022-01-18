@@ -1,0 +1,39 @@
+name: mikro
+# prefix: ""
+
+mgmt:
+  network: mikrostatics
+  ipv4_subnet: 172.100.101.0/24
+
+topology:
+  kinds:
+    vr-ros:
+      image: vrnetlab/vr-routeros:7.1
+    linux:
+      image: ghcr.io/hellt/network-multitool
+  nodes:
+    ros01:
+      kind: vr-ros
+      startup-config: ros01.txt
+      mgmt_ipv4: 172.100.101.11
+    ros02:
+      kind: vr-ros
+      startup-config: ros02.txt
+      mgmt_ipv4: 172.100.101.12
+    ros03:
+      kind: vr-ros
+      startup-config: ros03.txt
+      mgmt_ipv4: 172.100.101.13
+    client1:
+      kind: linux
+      mgmt_ipv4: 172.100.101.21
+    client2:
+      kind: linux
+      mgmt_ipv4: 172.100.101.22
+  links:
+    - endpoints: ["ros01:eth1", "ros02:eth1"]
+    - endpoints: ["ros02:eth2", "ros03:eth1"]
+    - endpoints: ["ros03:eth2", "ros01:eth2"]
+    # Client connections
+    - endpoints: ["client1:eth1", "ros01:eth3"]
+    - endpoints: ["client2:eth1", "ros03:eth3"]

@@ -1,0 +1,6 @@
+all:
+  children:
+    ceos:
+      hosts:
+        spine1:
+          ansible_host: 172.100.100.11

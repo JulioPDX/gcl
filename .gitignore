@@ -1,5 +1,8 @@
 .net.clab.yaml
+.mikro.clab.yaml
+.clos.clab.yaml
 cicd/
+clab-mikro/
 junos-lic
 nornir.log
 
