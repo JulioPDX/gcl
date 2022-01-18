@@ -46,7 +46,7 @@ sudo containerlab deploy -t clos.clab.yaml
 
 If the startup configurations are not set, run the included python script to deploy the configurations.
 
-```bash
+```python
 (venv) juliopdx@drone:~/git/gcl$ python3 deploy.py 
 deploy_network******************************************************************
 * client1 ** changed : False ***************************************************
