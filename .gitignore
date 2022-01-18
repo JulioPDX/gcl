@@ -3,6 +3,7 @@
 .clos.clab.yaml
 cicd/
 clab-mikro/
+clab-clos/
 junos-lic
 nornir.log
 

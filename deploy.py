@@ -13,10 +13,16 @@ def deploy_network(task):
     if "client" in task.host.name:
         pass
     else:
+        # task1_result = task.run(
+        #     name=f"Configuring {task.host.name}!",
+        #     task=napalm_configure,
+        #     filename=f"configs/post/{task.host.name}.cfg",
+        #     replace=True,
+        # )
         task1_result = task.run(
             name=f"Configuring {task.host.name}!",
             task=napalm_configure,
-            filename=f"configs/post/{task.host.name}.cfg",
+            filename=f"clos_config/{task.host.name}.cfg",
             replace=True,
         )
 

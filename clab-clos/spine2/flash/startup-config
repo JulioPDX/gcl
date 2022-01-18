@@ -1,15 +1,20 @@
-// Copyright 2020 Nokia
-// Licensed under the BSD 3-Clause License.
-// SPDX-License-Identifier: BSD-3-Clause
-
-hostname spine2
-username admin privilege 15 secret admin
+! Startup-config last modified at Tue Jan 18 21:14:01 2022 by root
+! device: spine2 (cEOSLab, EOS-4.27.0F-24305004.4270F (engineering build))
+!
+no aaa root
+!
+username admin privilege 15 role network-admin secret sha512 $6$T/CGZM5F5rG1XgNQ$FfsFsB7b.MOaZQMPMx35tkQPg2WpnywRah4EMVS2c73x8vkzYxVPbijG6C3ClTi66G6wY.0nUWVg62z5/IIMV1
+!
+transceiver qsfp default-mode 4x10G
 !
 service routing protocols model multi-agent
 !
-interface Management0
-ip address 172.100.100.12/0
-
+hostname spine2
+!
+spanning-tree mode mstp
+!
+management api http-commands
+   no shutdown
 !
 management api gnmi
    transport grpc default
@@ -17,7 +22,68 @@ management api gnmi
 management api netconf
    transport ssh default
 !
-management api http-commands
-   no shutdown
+interface Ethernet1
+   description leaf1
+   mtu 9214
+   no switchport
+   ip address 10.0.2.0/31
+!
+interface Ethernet2
+   description leaf2
+   mtu 9214
+   no switchport
+   ip address 10.0.2.2/31
+!
+interface Ethernet3
+   description leaf3
+   mtu 9214
+   no switchport
+   ip address 10.0.2.4/31
+!
+interface Ethernet4
+   description leaf4
+   mtu 9214
+   no switchport
+   ip address 10.0.2.6/31
+!
+interface Loopback0
+   ip address 10.0.250.2/32
+!
+interface Management0
+   ip address 172.100.100.12/24
+!
+ip routing
+!
+router bgp 65000
+   router-id 10.0.250.2
+   no bgp default ipv4-unicast
+   distance bgp 20 200 200
+   neighbor evpn peer group
+   neighbor evpn next-hop-unchanged
+   neighbor evpn update-source Loopback0
+   neighbor evpn ebgp-multihop 3
+   neighbor evpn send-community extended
+   neighbor evpn maximum-routes 12000 warning-only
+   neighbor 10.0.2.1 remote-as 65001
+   neighbor 10.0.2.3 remote-as 65001
+   neighbor 10.0.2.5 remote-as 65002
+   neighbor 10.0.2.7 remote-as 65002
+   neighbor 10.0.250.11 peer group evpn
+   neighbor 10.0.250.11 remote-as 65001
+   neighbor 10.0.250.12 peer group evpn
+   neighbor 10.0.250.12 remote-as 65001
+   neighbor 10.0.250.13 peer group evpn
+   neighbor 10.0.250.13 remote-as 65002
+   neighbor 10.0.250.14 peer group evpn
+   neighbor 10.0.250.14 remote-as 65002
+   !
+   address-family evpn
+      neighbor evpn activate
+   !
+   address-family ipv4
+      neighbor 10.0.2.1 activate
+      neighbor 10.0.2.3 activate
+      neighbor 10.0.2.5 activate
+      neighbor 10.0.2.7 activate
 !
 end

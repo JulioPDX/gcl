@@ -1,3 +1,3 @@
-nornir
-nornir_ansible
-nornir_napalm
+nornir==3.2.0
+nornir_ansible==2021.7.30
+nornir_napalm==0.1.2
