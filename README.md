@@ -211,7 +211,7 @@ bash-5.0#
 
 ## Testing external connectivity
 
-I added some bogus default route on the ext node. This is then advertised into BGP but only under the vrf where Client2 and Client3 reside. Lets see if they can reach "10.80.40.1".
+I added some bogus default route on the ext node. This is then advertised into BGP but only under the vrf where Client2 and Client4 reside. Lets see if they can reach "10.80.40.1".
 
 ```bash
 (venv) juliopdx@drone:~/git/gcl$ docker exec -it client4 bash
